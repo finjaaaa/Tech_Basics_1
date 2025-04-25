@@ -1,63 +1,59 @@
 import random
 import time
 
-# Instructions for the user
-print("Welcome to the ASCII Art Generator!")
-print("You'll be asked for:")
-print("- Width (integer, 5 to 20)")
-print("- Height (integer, 3 to 10)")
-print("- Your favorite character (just one, e.g. *, #, @, etc.)")
+print("🌴 ASCII-Island-Generator 🌴")
+print("Please enter the size of your island and a symbol.")
 
-# Get user inputs with validation
+# while-loop for the size
 while True:
     try:
-        width = int(input("Enter width (5-20): "))
-        if 5 <= width <= 20:
-            break
-        else:
-            print("Please enter a number between 5 and 20.")
-    except ValueError:
-        print("That's not a valid number.")
+        width = int(input("width of the island (7-30): "))
+        if 7 <= width <= 30: break
+        print("Please enter a valid width between 7 and 30!")
+    except:
+        print("unvalid number!")
 
 while True:
     try:
-        height = int(input("Enter height (3-10): "))
-        if 3 <= height <= 10:
-            break
-        else:
-            print("Please enter a number between 3 and 10.")
-    except ValueError:
-        print("That's not a valid number.")
+        height = int(input("height of the island (4-20): "))
+        if 4 <= height <= 20: break
+        print("Please enter a valid height between 4 and 20!")
+    except:
+        print("unvalid number!")
 
 while True:
-    char = input("Enter a single character to use: ")
-    if len(char) == 1:
-        break
-    else:
-        print("Please enter exactly one character.")
+    island_symbol = input("Which symbol dou you want for the island? (one symbol only.): ")
+    if len(island_symbol) == 1: break
+    print("Please enter one symbol only!")
 
-# List of random filler characters
-filler_chars = ['.', '*', '+', '@', '#', '%', '&']
+water = "~"
+edge = [" ", water]
 
-print("\nGenerating your ASCII art...\n")
+print("\nGenerating your island...\n")
 time.sleep(1)
 
-# Nested loops to build the ASCII art
-for row in range(height):
-    line = ""
-    for col in range(width):
-        # Randomly decide to use user's char or a random filler
-        if random.random() < 0.6:  # 60% chance to use user's char
-            line += char
-        else:
-            line += random.choice(filler_chars)
-    print(line)
-    time.sleep(0.3)  # Animation effect
+# centre of the island
+centre_x = width // 2
+centre_y = height // 2
+max_radius = min(width, height) // 2
 
-# Bonus: Unexpected message
-if char == "*":
-    print("\nYou chose the classic star! 🌟")
-elif char == "@":
-    print("\nAt your service! 😉")
-else:
-    print("\nASCII art complete! Hope you enjoyed the randomness!")
+for y in range(height):
+    line = ""
+    for x in range(width):
+        # length from the centre, random for an irregular island shape
+        space = ((x - centre_x) ** 2 + (y - centre_y) ** 2) ** 0.5
+        border = max_radius - random.randint(0, 2)
+        if space < border:
+            # possibility for a sand beach ('.')
+            if random.random() < 0.12:
+                line += "."
+            else:
+                line += island_symbol
+        else:
+            # water or empty edge
+            line += random.choice(edge)
+    print(line)
+    time.sleep(0.20)
+
+print("\nThe island is ready for an adventure!\n")
+
